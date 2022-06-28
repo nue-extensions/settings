@@ -10,7 +10,7 @@ Fasilitas tambahan untuk membantu kamu dalam pengembangan. Ada 3 fasilitas tamba
 
 ## Persyaratan
 
-* nue >= 2.5
+* nue >= 2.5 (Kalau versi dibawah, kamu bisa jalankan `composer update novay/nue` dahulu)
 
 ## Instalasi
 
