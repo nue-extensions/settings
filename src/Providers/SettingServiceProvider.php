@@ -3,7 +3,6 @@
 namespace Nue\Setting\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Novay\Nue\Nue;
 use Nue\Setting\Setting;
 
 class SettingServiceProvider extends ServiceProvider
@@ -21,6 +20,6 @@ class SettingServiceProvider extends ServiceProvider
             Setting::routes(__DIR__.'/../../routes/web.php');
         });
 
-        Nue::extend('settings', __CLASS__);
+        Setting::boot();
     }
 }

@@ -3,12 +3,24 @@
 namespace Nue\Setting;
 
 use Novay\Nue\Extension;
+use Novay\Nue;
+use Novay\Nue\Models\Menu;
 
 class Setting extends Extension
 {
     public $name = 'settings';
 
     public $views = __DIR__.'/../resources/views';
+
+    /**
+     * Bootstrap this package.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        Nue::extend('helpers', __CLASS__);
+    }
 
     /**
      * Enable this function if you want to automatically inject menu & permission
@@ -24,32 +36,27 @@ class Setting extends Extension
             'parent_id' => 0,
             'order'     => $lastOrder++,
             'title'     => 'Helpers',
-            'icon'      => 'fa-gears',
-            'uri'       => '',
+            'icon'      => 'icon-park-twotone:folder-code',
+            'uri'       => 'helpers',
         ];
 
         $root = Menu::create($root);
 
         $menus = [
             [
-                'title'     => 'Scaffold',
-                'icon'      => 'fa-keyboard-o',
-                'uri'       => 'helpers/scaffold',
-            ],
-            [
-                'title'     => 'Database terminal',
-                'icon'      => 'fa-database',
-                'uri'       => 'helpers/terminal/database',
-            ],
-            [
-                'title'     => 'Laravel artisan',
-                'icon'      => 'fa-terminal',
-                'uri'       => 'helpers/terminal/artisan',
-            ],
-            [
                 'title'     => 'Routes',
-                'icon'      => 'fa-list-alt',
+                'icon'      => 'icon-park-twotone:copy-link',
                 'uri'       => 'helpers/routes',
+            ],
+            [
+                'title'     => 'Terminal',
+                'icon'      => 'icon-park-twotone:terminal',
+                'uri'       => 'helpers/terminal',
+            ],
+            [
+                'title'     => 'Generators',
+                'icon'      => 'icon-park-twotone:game-console',
+                'uri'       => 'helpers/generate',
             ],
         ];
 
@@ -60,6 +67,6 @@ class Setting extends Extension
             Menu::create($menu);
         }
 
-        parent::createPermission('Admin helpers', 'ext.helpers', 'helpers/*');
+        parent::createPermission('Helpers', 'ext.helpers', 'helpers/*');
     }
 }

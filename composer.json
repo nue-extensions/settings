@@ -1,6 +1,6 @@
 {
     "name": "nue-extensions/settings",
-    "description": "Description...",
+    "description": "Additional tools to help you in development with Nue.",
     "type": "library",
     "keywords": ["nue", "extension"],
     "homepage": "https://github.com/nue-extensions/settings",
@@ -9,10 +9,6 @@
         {
             "name": "Noviyanto Rahmadi",
             "email": "novay@btekno.id"
-        }, 
-        {
-            "name": "Put your name",
-            "email": "Put your email"
         }
     ],
     "require": {

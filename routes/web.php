@@ -2,7 +2,7 @@
 
 Route::group([
 	'namespace' => 'Nue\Setting\Http\Controllers', 
-	'prefix' => 'nue'
+	'prefix' => 'helpers'
 ], function() {
 
 	Route::resource('terminal', 'TerminalController')->only(['index', 'store']);
