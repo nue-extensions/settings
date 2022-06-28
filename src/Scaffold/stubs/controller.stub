@@ -1,0 +1,170 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+use App\Models\DummyModelNamespace;
+
+class DummyClass extends Controller
+{
+    protected $title = 'DummyClass';
+
+    /**
+     * Siapkan konstruktor controller
+     * 
+     * @param DummyModel $data
+     */
+    public function __construct(DummyModel $data) 
+    {
+        $this->data = $data;
+
+        $this->toIndex = route('DummyViewName.index');
+        $this->prefix = 'DummyViewName';
+        $this->view = 'nue.DummyViewName';
+
+        view()->share([
+            'title' => $this->title, 
+            'view' => $this->view, 
+            'prefix' => $this->prefix
+        ]);
+    }
+
+    /**
+     * Tampilkan halaman utama modul yang dipilih
+     * 
+     * @param Request $request
+     * @return Response|View
+     */
+    public function index(Request $request) 
+    {
+        $data = $this->data->query();
+
+        if($request->has('datatable')):
+            return $this->datatable($data);
+        endif;
+
+        return view("$this->view.index", compact('data'));
+    }
+
+    /**
+     * Tampilkan halaman untuk menambah data
+     * 
+     * @return Response|View
+     */
+    public function create() 
+    {
+        return view("$this->view.create");
+    }
+
+    /**
+     * Lakukan penyimpanan data ke database
+     * 
+     * @param Request $request
+     * @return Response|View
+     */
+    public function store(Request $request) 
+    {
+        $this->validate($request, [
+            DummyStore
+        ]);
+
+        $input = $request->all();
+        $this->data->create($input);
+        
+        notify()->flash("$this->title berhasil dibuat!", 'success');
+        return redirect($this->toIndex);
+    }
+
+    /**
+     * Menampilkan detail lengkap
+     * 
+     * @param Int $id
+     * @return Response|View
+     */
+    public function show($id)
+    {
+        return abort(404);
+    }
+
+    /**
+     * Tampilkan halaman perubahan data
+     * 
+     * @param Int $id
+     * @return Response|View
+     */
+    public function edit(Request $request, $id)
+    {
+        $edit = $this->data->findOrFail($id);
+    
+        return view("$this->view.edit", compact('edit'));
+    }
+
+    /**
+     * Lakukan perubahan data sesuai dengan data yang diedit
+     * 
+     * @param Request $request
+     * @param Int $id
+     * @return Response|View
+     */
+    public function update(Request $request, $id)
+    {
+        $edit = $this->data->findOrFail($id);
+
+        $this->validate($request, [
+            DummyUpdate
+        ]);
+
+        $input = $request->all();
+        $edit->update($input);
+        
+        notify()->flash("$this->title berhasil diperbarui!", 'success');
+        return redirect($this->toIndex);
+    }
+
+    /**
+     * Lakukan penghapusan data yang tidak diinginkan
+     * 
+     * @param Request $request
+     * @param Int $id
+     * @return Response|String
+     */
+    public function destroy(Request $request, $id)
+    {
+        if($request->has('pilihan')):
+            foreach($request->pilihan as $temp):
+                $data = $this->data->findOrFail($temp);
+                $data->delete();
+            endforeach;
+            
+            notify()->flash("$this->title berhasil dihapus!", 'success');
+            return redirect()->back();
+        endif;
+    }
+
+    /**
+     * Datatable API
+     * 
+     * @param  $data
+     * @return Datatable
+     */
+    public function datatable($data) 
+    {
+        return datatables()->of($data)
+            ->editColumn('pilihan', function($data) {
+                return '<div class="form-check mb-0">
+                    <input type="checkbox" class="form-check-input pilihan" id="pilihan['.$data->id.']" name="pilihan[]" value="'.$data->id.'">
+                    <label class="form-check-label" for="pilihan['.$data->id.']"></label>
+                </div>';
+            })
+            DummyIndex
+            ->editColumn('action', function($data) {
+                return '<a href="'.route("$this->prefix.edit", $data->id).'" class="link link-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Edit">
+                    <span class="iconify" data-icon="heroicons-solid:pencil-alt"></span>
+                    <span class="sembunyi">Edit</span>
+                </a>';
+            })
+            ->escapeColumns(['*'])->toJson();
+    }
+}

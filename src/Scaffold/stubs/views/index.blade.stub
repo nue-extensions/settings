@@ -1,0 +1,80 @@
+@extends('layouts.app')
+@section('title', $title)
+
+@section('js')
+  <script>
+      var table = Nue.components.NueDatatables.init('.js-datatable', {
+          // order: [[ 1, "asc" ]], 
+          scrollY: 'calc(100vh - 245px)',
+          ajax : '{!! request()->fullUrl() !!}?datatable=true', 
+          columns: [
+              { data: 'pilihan', name: 'pilihan', className: 'table-column-pe-0 text-center', orderable: false, searchable: false },
+              DummyColumnScript
+              { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false }
+          ],
+          @include('nue::components.datatable.script')
+      });
+  </script>
+@endsection
+
+@section('content')
+  
+  <nav aria-label="breadcrumb" class="py-2 px-3 bg-light border-bottom">
+    <ol class="breadcrumb breadcrumb-no-gutter small mb-0">
+      <li class="breadcrumb-item"><span class="iconify text-muted" data-icon="heroicons-solid:home"></span></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
+    </ol>
+  </nav>
+
+  {!! Form::open(['method' => 'DELETE', 'route' => ["$prefix.destroy", 'hapus-all'], 'id' => 'submit-all']) !!}
+
+    <div class="d-flex bg-white align-items-center p-2">
+      <div class="col-sm d-sm-flex align-items-center">
+        <a class="btn btn-soft-primary btn-sm" href="{{ route("$prefix.create") }}">
+          <span class="iconify" data-icon="ps:plus"></span>
+          Tambah
+        </a>
+      </div>
+      <div class="col-sm-auto d-sm-flex align-items-center d-none">
+        <div id="datatable-checkbox-info" style="display: none;">
+          <button type="button" class="btn btn-soft-danger btn-sm" id="delete-selected">
+            <i class="bi bi-trash me-1"></i>
+            Delete <span id="datatable-checkbox">0</span> rows
+          </button>
+        </div>
+        <div class="ms-1">
+          <div class="input-group input-group-merge">
+            <div class="input-group-prepend input-group-text px-2">
+              <i class="bi-search"></i>
+            </div>
+            <input id="datatabe-search" type="search" class="form-control form-control-sm ps-5" placeholder="Search" aria-label="Search">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-bordered shadow-none rounded-0">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table id="datatable" class="js-datatable table table-sm table-bordered table-align-middle table-hover table-nue">
+            <thead class="thead-light">
+              <tr>
+                <th class="table-column-pe-0" width="1">
+                  <div class="form-check mb-0">
+                    <input id="datatable-checkbox-check" type="checkbox" class="form-check-input">
+                    <label class="form-check-label" for="check-all"></label>
+                  </div>
+                </th>
+                DummyColumnTable
+                <th width="10%">Action</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      @include('nue::components.datatable.footer')
+    </div>
+
+  {!! Form::close() !!}
+
+@endsection

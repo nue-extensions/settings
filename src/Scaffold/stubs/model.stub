@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+DummyImportSoftDeletesTrait
+
+class DummyClass extends Model
+{
+    DummyUseSoftDeletesTrait
+
+    DummyModelTable
+
+    DummyModelKey
+
+    DummyTimestamp
+    
+    DummyFillable
+}

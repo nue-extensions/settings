@@ -1,0 +1,38 @@
+@extends('layouts.app')
+@section('title', "Edit - $title")
+
+@section('css')
+@endsection
+
+@section('js')
+@endsection
+
+@section('content')
+  <nav aria-label="breadcrumb" class="py-2 px-3 bg-light border-bottom">
+    <ol class="breadcrumb breadcrumb-no-gutter small mb-0">
+      <li class="breadcrumb-item"><span class="iconify text-muted" data-icon="heroicons-solid:home"></span></li>
+      <li class="breadcrumb-item">
+        <a class="breadcrumb-link" href="{{ route("$prefix.index") }}">{{ $title }}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+  </nav>
+
+  <div class="d-flex bg-white align-items-center p-2">
+    <div class="col-sm d-sm-flex align-items-center">
+      <a class="btn btn-soft-secondary btn-sm" href="{{ route("$prefix.index") }}">
+        <span class="iconify" data-icon="ic:round-arrow-back-ios-new"></span>
+        Kembali
+      </a>
+    </div>
+    <div class="col-sm-auto d-sm-flex align-items-center d-none"></div>
+  </div>
+    
+  {!! Form::model($edit, ['route' => ["$prefix.update", $edit->id], 'autocomplete' => 'off', 'method' => 'PUT']) !!}
+    <div class="content container-fluid p-2">
+      <div class="card rounded-1">
+        @include("$view.form")
+      </div>
+    </div>
+  {!! Form::close() !!}
+@endsection
