@@ -3,7 +3,7 @@
 namespace Nue\Setting;
 
 use Novay\Nue\Extension;
-use Novay\Nue;
+use Novay\Nue\Nue;
 use Novay\Nue\Models\Menu;
 
 class Setting extends Extension
