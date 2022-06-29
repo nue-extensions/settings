@@ -6,10 +6,8 @@
 
 @section('js')
     <script>
-        Nue.components.NueSelect.init('.js-select');
         $(function () {
             $('#add-table-field').click(function (event) {
-                Nue.components.NueSelect.init('.js-select-custom');
                 $('#table-fields tbody').append($('#table-field-tpl').html().replace(/__index__/g, $('#table-fields tr').length - 1));
             });
             $('#table-fields').on('click', '.table-field-remove', function(event) {
